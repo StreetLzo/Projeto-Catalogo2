@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+
+actor "Visitante" as v
+actor "Usuário Registrado" as u
+actor "Administrador" as a
+
+package "Catálogo de Projetos Acadêmicos" {
+  
+  usecase "Registrar-se" as UC1
+  usecase "Fazer Login" as UC2
+  usecase "Registrar Projeto" as UC3
+  usecase "Pesquisar Projetos" as UC4
+  usecase "Visualizar Projetos" as UC5
+  usecase "Favoritar Projeto" as UC6
+  usecase "Editar Projeto" as UC7
+  usecase "Excluir Projeto" as UC8
+}
+
+' Relações dos atores
+v --> UC4
+v --> UC5
+
+u --> UC1
+u --> UC2
+u --> UC3
+u --> UC4
+u --> UC5
+u --> UC6
+
+a --> UC7
+a --> UC8
+@enduml
+

@@ -1,0 +1,32 @@
+@startuml
+entity "Usuário" as usuario {
+  *id_usuario : int
+  nome : varchar
+  email : varchar
+  senha : varchar
+  foto_perfil : blob
+}
+
+entity "Projeto" as projeto {
+  *id_projeto : int
+  titulo : varchar
+  descricao : text
+  data_publicacao : date
+}
+
+entity "Autor_Projeto" as autorProjeto {
+  *id_autor_projeto : int
+}
+
+entity "Favorito" as favorito {
+  *id_favorito : int
+}
+
+' Relacionamentos
+usuario ||--o{ projeto : "registra"
+projeto }o--o{ usuario : "possui autores" 
+usuario ||--o{ favorito : "marca"
+projeto ||--o{ favorito : "é favoritado"
+@enduml
+
+
