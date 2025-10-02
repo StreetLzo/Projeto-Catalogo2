@@ -1,98 +1,102 @@
 
-# 📚 Catálogo de Trabalhos Acadêmicos e Projetos
-## 👥 Autores
-* Felipe
-* Kauan
-* Wellyson
-* Pedro
-* Lamburghini
+## 📄 README.md
 
-## 📖 Descrição
+````markdown
+# 📚 Catálogo de Trabalhos Acadêmicos
 
-Este projeto consiste em um **catálogo digital de trabalhos acadêmicos e projetos desenvolvidos por estudantes**, permitindo que novas turmas possam **se inspirar em produções passadas, consultar ideias, registrar novas criações e evitar a perda ou a cópia de trabalhos antigos**.
-
-A plataforma promove a **organização, preservação e reutilização de conhecimento** produzido em ambiente acadêmico.
+Este projeto tem como objetivo oferecer uma plataforma simples e eficiente para o **cadastro, organização e consulta de projetos acadêmicos**, permitindo que estudantes e professores tenham acesso a trabalhos de turmas anteriores, evitando a perda de conhecimento e incentivando a inovação.
 
 ---
 
-## 🎯 Objetivos
+## 🚀 Funcionalidades
 
-* Disponibilizar um repositório acessível de projetos e trabalhos acadêmicos.
-* Permitir que estudantes cadastrem seus próprios projetos.
-* Facilitar a pesquisa de trabalhos já cadastrados.
-* Evitar a duplicação ou cópia de trabalhos antigos.
-* Servir como fonte de inspiração para novos projetos.
-
----
-
-## ⚙️ Funcionalidades
-
-* **Cadastro de usuário** com nome, e-mail, senha e foto de perfil.
-* **Login de usuário** para acesso ao sistema.
-* **Registro de projetos** com título, descrição, autores e data de publicação.
-* **Pesquisa de projetos** por título ou descrição.
-* **Visualização de projetos** com detalhes.
-* **Favoritar projetos** para consulta rápida.
-* **Gerenciamento administrativo** com permissões para editar ou excluir projetos.
-
----
-
-## 🗂️ Estrutura do Sistema
-
-### Entidades principais:
-
-* **Usuário** → responsável por cadastrar e favoritar projetos.
-* **Projeto** → trabalhos cadastrados com título, descrição, autores e data.
-* **Autor_Projeto** → relacionamento entre usuários e projetos.
-* **Favorito** → permite que projetos sejam salvos pelos usuários.
+- Cadastro de usuários  
+- Autenticação segura (login/logout)  
+- Cadastro de projetos com título, descrição, autores e arquivo anexo  
+- Pesquisa de projetos por título, descrição ou autor  
+- Favoritar projetos para consulta rápida  
+- Edição e exclusão de projetos (autores e administradores)  
+- Painel administrativo para gerenciar usuários e projetos  
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Frontend:** HTML5, CSS3, JavaScript
-* **Backend:** Python (Flask/Django) ou Node.js (dependendo da implementação escolhida)
-* **Banco de Dados:** MySQL / PostgreSQL
-* **Controle de Versão:** Git e GitHub
-* **Ferramentas:** Visual Studio Code
+- **Python 3**  
+- **Flask** (framework web)  
+- **Flask-WTF** (formulários e validação)  
+- **Flask-Login** (autenticação)  
+- **Flask-Migrate + SQLAlchemy** (ORM e migrações de banco)  
+- **SQLite** (banco padrão, podendo trocar para MySQL)  
+- **Bootstrap 5** (frontend responsivo)  
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 📂 O que você encontra aqui
 
-1. Clone este repositório:
+Neste repositório você encontrará:  
+- Código-fonte completo da aplicação  
+- Estrutura de templates HTML com Bootstrap  
+- Arquivo `requirements.txt` com dependências do projeto  
+- Documentação básica para rodar o sistema localmente  
 
-   bash
+---
+
+## ▶️ Como executar o projeto
+
+1. Clone este repositório:  
+   ```bash
    git clone https://github.com/seu-usuario/catalogo-projetos.git
-
-2. Acesse o diretório do projeto:
-
-   bash
    cd catalogo-projetos
-   
-3. Configure o ambiente virtual (Python) ou instale as dependências do Node.js.
+````
 
-   bash
-   pip install -r requirements.txt   # para Python  
-   npm install                      # para Node.js
-   
-4. Execute o servidor:
+2. Crie e ative o ambiente virtual:
 
-   bash
-   python app.py      # para Flask/Django  
-   npm start          # para Node.js
-   
-5. Abra o navegador em:
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate    # Windows
+   source venv/bin/activate # Linux/Mac
+   ```
 
-   
-   http://localhost:3000
+3. Instale as dependências:
 
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+4. Configure o banco de dados:
 
-## 📌 Possíveis Expansões Futuras
+   ```bash
+   flask db init
+   flask db migrate -m "initial"
+   flask db upgrade
+   ```
 
-* Sistema de verificação de plágio.
-* Upload de arquivos (PDF, imagens, relatórios).
-* Comentários e avaliações em projetos.
-* Integração com APIs educacionais.
-* Módulo de estatísticas de acesso e popularidade.
+5. Rode a aplicação:
+
+   ```bash
+   flask run
+   ```
+
+6. Acesse no navegador:
+
+   ```
+   http://127.0.0.1:5000
+   ```
+
+---
+
+## 👥 Autores
+
+* Felipe
+* Kauan
+* Wellyson
+* Pedro
+* Lamborghini
+
+```
+
+---
+
+👉 Quer que eu faça também uma **versão curta do README**, só com *descrição + como rodar + autores*, para ser usado em trabalhos acadêmicos impressos (TCC/relatório), ou prefere manter esse mais completo estilo GitHub?
+```

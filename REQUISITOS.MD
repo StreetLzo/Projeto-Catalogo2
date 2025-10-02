@@ -1,48 +1,75 @@
-📋 Requisitos do Sistema
-✅ Requisitos Funcionais
+# Documento de Requisitos – Catálogo de Trabalhos Acadêmicos
 
-O sistema deve permitir o cadastro de usuários com nome, e-mail, senha e foto de perfil.
+**Disciplinas:** Programação Web, Projeto e Desenvolvimento de Sistemas, Banco de Dados II
 
-O sistema deve permitir que usuários façam login para acessar funcionalidades restritas.
+**Alunos:** Felipe, Kauan, Wellyson, Pedro, Lamborghini
 
-O sistema deve permitir que usuários cadastrem projetos, informando título, descrição, autores e data de publicação.
+**Professores:** Camila Santos, Eudóxia Moura, Marcos Faino
 
-O sistema deve possibilitar a edição e a exclusão de projetos pelos seus autores.
+---
 
-O administrador deve poder editar ou excluir qualquer projeto registrado.
+## 📖 Descrição Geral do Sistema
 
-O sistema deve permitir a pesquisa de projetos por título, descrição ou autor.
+O **Catálogo de Trabalhos Acadêmicos e Projetos** tem como objetivo armazenar, organizar e disponibilizar projetos desenvolvidos por estudantes, permitindo a consulta de trabalhos de turmas anteriores, favorecendo a preservação do conhecimento, a inspiração para novas ideias e a prevenção da duplicação de conteúdos.
 
-O sistema deve permitir que usuários visualizem os projetos cadastrados com detalhes.
+O sistema permite que usuários registrem novos projetos, pesquisem, visualizem, favoritem e façam download dos arquivos associados. Professores e administradores podem gerenciar os registros e manter a integridade dos dados.
 
-O sistema deve permitir que usuários favoritem projetos para consulta futura.
+---
 
-O sistema deve exibir uma lista de projetos cadastrados, ordenados por data ou relevância.
+## 🔎 Pesquisa Desk
 
-O sistema deve manter o histórico de autores vinculados a cada projeto.
+O levantamento de requisitos foi realizado por meio de:
 
-⚙️ Requisitos Não Funcionais
+* Conversas com professores e alunos sobre necessidades acadêmicas.
+* Análise de repositórios similares em universidades.
+* Identificação de problemas atuais, como:
 
-O sistema deve ser desenvolvido utilizando arquitetura web responsiva, acessível por desktop e dispositivos móveis.
+  * Perda de trabalhos por falta de centralização.
+  * Dificuldade de consulta a projetos antigos.
+  * Risco de plágio ou repetição de ideias.
 
-O sistema deve ter interface amigável e intuitiva, visando facilitar o uso por estudantes e professores.
+---
 
-O sistema deve armazenar dados em um banco de dados relacional (ex.: MySQL, PostgreSQL).
+## 👥 Atores / Personas
 
-O sistema deve garantir a segurança das informações dos usuários (criptografia de senha, controle de sessão).
+* **Visitante:** Pode pesquisar e visualizar trabalhos, mas não cadastrar.
+* **Aluno/Usuário Registrado:** Pode cadastrar-se, fazer login, registrar projetos, pesquisar, visualizar e favoritar projetos.
+* **Administrador:** Possui permissões avançadas para editar e excluir projetos e gerenciar usuários.
+* **Professor:** Atua como avaliador e pode acessar relatórios de uso ou projetos cadastrados.
 
-O sistema deve suportar múltiplos acessos simultâneos sem perda de desempenho.
+---
 
-O sistema deve possibilitar futuras integrações com módulos de detecção de plágio.
+## ✅ Requisitos Funcionais (Casos de Uso)
 
-O sistema deve utilizar controle de versão via Git e GitHub.
+* Permitir cadastro, login e logout de usuários.
+* Registrar novos projetos com título, descrição, autores e arquivo anexo.
+* Editar e excluir projetos (apenas autores ou administradores).
+* Pesquisar projetos por título, descrição ou autor.
+* Visualizar detalhes de projetos cadastrados.
+* Favoritar projetos para acesso rápido.
+* Listar projetos recentes e mais populares.
+* Permitir que administradores gerenciem usuários.
+* Possibilidade de download dos arquivos anexados.
+* Exibir histórico dos projetos cadastrados.
 
-O tempo de resposta para consultas e pesquisas não deve exceder 3 segundos em condições normais de uso.
+---
 
-O sistema deve permitir fácil manutenção e expansão, seguindo boas práticas de programação.
+## ⚙️ Requisitos Não Funcionais
 
-O sistema deve estar documentado, contendo instruções de instalação, uso e manutenção.
+* **Interface amigável e responsiva**, utilizando Bootstrap.
+* **Autenticação segura** (criptografia de senhas, controle de sessão).
+* **Disponibilidade** contínua para acesso acadêmico.
+* **Compatibilidade** com desktop e dispositivos móveis.
+* **Banco de dados relacional** (SQLite em desenvolvimento, MySQL em produção).
+* **Backup automático** dos dados em produção.
+* **Tempo de resposta** inferior a 3 segundos por operação.
+* **Organização modular** para permitir manutenção e evolução do sistema.
 
-👉 Assim você já tem uma visão bem clara do que o sistema precisa fazer (funcionais) e como deve ser feito (não funcionais).
+---
 
-Quer que eu monte também um caso de uso textual detalhado (fluxo principal e alternativo) para cada requisito funcional, tipo “Cadastrar Projeto”, “Pesquisar Projeto”, etc.? Isso deixaria a documentação ainda mais completa.
+## 📚 Referências
+
+* Documentação oficial do Flask e Flask-SQLAlchemy.
+* Projetos similares de catálogos acadêmicos em universidades.
+* Sites de repositórios open source.
+* Materiais de aula de Banco de Dados II, Programação Web e PDS.
