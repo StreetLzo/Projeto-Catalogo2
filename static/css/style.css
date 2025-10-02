@@ -1,0 +1,293 @@
+/* style.css - Estilo baseado no PDF enviado (Registro / Lista de Projetos)
+   Coloque em: static/css/style.css
+   Recomendado: usar <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+*/
+
+/* Fonte (opcional: carregue em base.html via Google Fonts ou use @import) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root{
+  --bg: #fafbfd;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #0d6efd;        /* azul */
+  --accent-2: #06b6d4;      /* ciano */
+  --danger: #ef4444;
+  --radius: 10px;
+  --shadow-sm: 0 6px 18px rgba(16,24,40,0.06);
+  --shadow-md: 0 18px 40px rgba(16,24,40,0.08);
+  --text: #0f1724;
+  --subtle: rgba(15,23,36,0.04);
+}
+
+/* Reset leve */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  -webkit-font-feature-settings: "liga" 1;
+}
+
+/* Container central */
+.container {
+  max-width:980px;
+  margin:2.0rem auto;
+  padding:0 1rem;
+}
+
+/* --------- CAPA (primeira página) ----------
+   Se a capa deve ser descartada para estilização,
+   use <div class="cover-page no-style"> ... </div> no HTML
+   e mantenha o CSS sem interferir na capa.
+*/
+.cover-page.no-style * { all: initial; }
+
+/* ===== Header / Título grande igual ao PDF ===== */
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:3rem 1rem;
+  margin-bottom:1rem;
+}
+.header .title {
+  font-family: "Playfair Display", serif;
+  font-size:56px;
+  font-weight:700;
+  letter-spacing:0.6px;
+  color:var(--text);
+  margin:0;
+  text-align:center;
+}
+
+/* ===== Layout form + feed ===== */
+.layout {
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap:1.2rem;
+}
+
+/* ===== formulário (lado esquerdo) ===== */
+.form-card {
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  padding:1.2rem;
+  box-shadow:var(--shadow-sm);
+  border:1px solid var(--subtle);
+}
+.form-card h3 {
+  margin:0 0 0.8rem 0;
+  font-size:18px;
+  font-weight:700;
+}
+.field {
+  margin-bottom:0.9rem;
+}
+.label {
+  display:block;
+  font-size:0.82rem;
+  color:var(--muted);
+  margin-bottom:0.28rem;
+  font-weight:600;
+}
+.input, textarea, select {
+  width:100%;
+  padding:0.7rem 0.9rem;
+  border-radius:8px;
+  border:1px solid rgba(15,23,36,0.06);
+  background: #fff;
+  font-size:0.95rem;
+  color:var(--text);
+  outline:none;
+}
+textarea { min-height:110px; resize:vertical; }
+
+/* upload box (clique para adicionar imagem) */
+.upload-box {
+  display:flex;
+  gap:0.8rem;
+  align-items:center;
+}
+.avatar-preview {
+  width:74px;
+  height:74px;
+  border-radius:8px;
+  overflow:hidden;
+  background: linear-gradient(180deg,#f3f6fb,#fff);
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(15,23,36,0.03);
+}
+.avatar-preview img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.file-input {
+  flex:1;
+  display:flex;
+  gap:0.6rem;
+  align-items:center;
+}
+.file-input .fake {
+  flex:0 0 220px;
+  padding:0.7rem 0.9rem;
+  border-radius:8px;
+  border:1px dashed rgba(15,23,36,0.08);
+  background:#fff;
+  text-align:center;
+  font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+}
+.file-input .file-name {
+  font-size:0.9rem;
+  color:var(--muted);
+}
+
+/* botão publicar */
+.btn {
+  display:inline-block;
+  padding:0.6rem 0.9rem;
+  border-radius:8px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  border:none;
+}
+.btn-primary {
+  background:var(--accent);
+  color:white;
+}
+.btn-ghost {
+  background:transparent;
+  border:1px solid rgba(15,23,36,0.06);
+  color:var(--text);
+}
+
+/* ===== feed de projetos (direita) ===== */
+.feed-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:0.8rem;
+}
+.feed-header h3 { margin:0; font-size:18px; font-weight:700; }
+.search-row {
+  display:flex;
+  gap:0.6rem;
+  align-items:center;
+}
+.search-row input {
+  padding:0.5rem 0.7rem;
+  border-radius:8px;
+  border:1px solid rgba(15,23,36,0.06);
+  background:#fff;
+}
+
+/* projeto card */
+.project-card {
+  background:var(--card-bg);
+  border-radius:10px;
+  padding:1rem;
+  margin-bottom:0.9rem;
+  box-shadow:var(--shadow-sm);
+  border:1px solid var(--subtle);
+  display:flex;
+  gap:0.9rem;
+  align-items:flex-start;
+}
+.project-thumb {
+  width:110px;
+  height:70px;
+  border-radius:8px;
+  overflow:hidden;
+  background: linear-gradient(180deg,#f3f6fb,#fff);
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  color:var(--muted);
+  flex-shrink:0;
+}
+.project-meta {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+}
+.project-title {
+  font-weight:700;
+  font-size:1rem;
+  margin:0;
+}
+.project-desc {
+  margin:0;
+  color:var(--muted);
+  font-size:0.92rem;
+}
+.project-sub {
+  font-size:0.85rem;
+  color:var(--muted);
+}
+
+/* actions */
+.project-actions {
+  display:flex;
+  gap:0.5rem;
+  align-items:center;
+}
+.btn-fav {
+  background:transparent;
+  border:1px solid rgba(15,23,36,0.06);
+  padding:0.4rem 0.6rem;
+  border-radius:8px;
+  cursor:pointer;
+}
+.btn-fav.favorited {
+  background: linear-gradient(90deg, #ffe7e7, #fff6f6);
+  border-color: rgba(239,68,68,0.18);
+  color:var(--danger);
+  font-weight:700;
+}
+
+/* pequenos helpers */
+.meta-row {
+  display:flex;
+  gap:0.6rem;
+  align-items:center;
+  font-size:0.88rem;
+  color:var(--muted);
+}
+
+.empty {
+  padding:2rem;
+  text-align:center;
+  color:var(--muted);
+  background:linear-gradient(180deg,#fff,#fbfdff);
+  border-radius:8px;
+  border:1px dashed rgba(15,23,36,0.03);
+}
+
+/* ===== admin / detalhes (usa classes semelhantes) ===== */
+.detail-wrap {
+  display:grid;
+  grid-template-columns: 1fr 260px;
+  gap:1rem;
+}
+
+/* responsividade */
+@media (max-width:900px){
+  .layout { grid-template-columns: 1fr; }
+  .header .title { font-size:40px; padding:1rem 0; }
+  .project-thumb { width:92px; height:60px; }
+  .avatar-preview { width:64px; height:64px; }
+}
+
+/* utilitários */
+.text-muted { color:var(--muted) }
+.small { font-size:0.85rem; color:var(--muted) }
+.center { text-align:center }
+.mb-1 { margin-bottom:0.6rem }
