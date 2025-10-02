@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Projetos</h1>
+  <form class="d-flex" method="get" action="{{ url_for('index') }}">
+    <input name="q" class="form-control me-2" placeholder="Pesquisar..." value="{{ q }}">
+    <button class="btn btn-outline-primary">Buscar</button>
+  </form>
+</div>
+
+{% for p in projects.items %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ p.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ p.authors_text or 'Autores não informados' }}</h6>
+      <p class="card-text">{{ p.description[:250] }}{% if p.description|length > 250 %}...{% endif %}</p>
+      <a class="btn btn-sm btn-primary" href="{{ url_for('project_detail', project_id=p.id) }}">Ver</a>
+    </div>
+  </div>
+{% else %}
+  <p>Nenhum projeto encontrado.</p>
+{% endfor %}
+
+<nav>
+  <ul class="pagination">
+    {% if projects.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('index', page=projects.prev_num, q=q) }}">Anterior</a></li>
+    {% endif %}
+    {% if projects.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('index', page=projects.next_num, q=q) }}">Próxima</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h3>{{ project.title }}</h3>
+    <h6 class="text-muted">Autores: {{ project.authors_text }}</h6>
+    <p class="mt-3">{{ project.description }}</p>
+
+    {% if project.file_path %}
+      <a class="btn btn-outline-secondary" href="{{ url_for('uploads', filename=project.file_path) }}">Baixar Arquivo</a>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+      <form action="{{ url_for('favorite_toggle', project_id=project.id) }}" method="POST" style="display:inline;">
+        {% if is_fav %}
+          <button type="submit" class="btn btn-warning">Remover dos Favoritos</button>
+        {% else %}
+          <button type="submit" class="btn btn-success">Favoritar</button>
+        {% endif %}
+      </form>
+
+      {% if current_user.is_admin or current_user in project.authors %}
+        <a class="btn btn-info" href="{{ url_for('edit_project', project_id=project.id) }}">Editar</a>
+        <form action="{{ url_for('delete_project', project_id=project.id) }}" method="POST" style="display:inline;">
+          <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+    

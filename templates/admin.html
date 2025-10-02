@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Painel Administrativo</h2>
+
+<h4>Usuários</h4>
+<table class="table table-striped">
+  <thead>
+    <tr><th>ID</th><th>Nome</th><th>Email</th><th>Admin</th></tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.name }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ 'Sim' if u.is_admin else 'Não' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Projetos</h4>
+<table class="table table-striped">
+  <thead>
+    <tr><th>ID</th><th>Título</th><th>Autores</th><th>Data</th></tr>
+  </thead>
+  <tbody>
+    {% for p in projects %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.title }}</td>
+      <td>{{ p.authors_text }}</td>
+      <td>{{ p.created_at.strftime('%d/%m/%Y') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

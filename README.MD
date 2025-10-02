@@ -5,7 +5,7 @@
 * Kauan
 * Wellyson
 * Pedro
-* Lamborghini
+* Lamburghini
 
 ## 📖 Descrição
 
