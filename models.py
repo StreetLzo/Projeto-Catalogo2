@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    foto_perfil = db.Column(db.String(255), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
     projects = db.relationship('Project', secondary=author_project, back_populates='authors')
 

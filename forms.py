@@ -23,3 +23,15 @@ class ProjectForm(FlaskForm):
     authors = StringField('Autores (separe por vírgula)', validators=[DataRequired()])
     file = FileField('Arquivo (pdf, imagens ou zip)', validators=[FileAllowed(['pdf','png','jpg','jpeg','zip'])])
     submit = SubmitField('Publicar')
+
+
+from flask_wtf.file import FileField, FileAllowed
+
+class RegisterForm(FlaskForm):
+    name = StringField('Nome', validators=[DataRequired(), Length(max=120)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
+    password = PasswordField('Senha', validators=[DataRequired(), Length(min=6)])
+    confirm = PasswordField('Confirme a senha', validators=[DataRequired(), EqualTo('password')])
+    foto = FileField('Foto de Perfil', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens!')])
+    submit = SubmitField('Cadastrar')
+

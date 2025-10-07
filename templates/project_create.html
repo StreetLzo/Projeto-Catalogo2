@@ -2,45 +2,37 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8">
-    <h2>Adicionar Novo Projeto</h2>
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('create_project') }}">
+    <h2>Novo Projeto</h2>
+    <form method="POST" enctype="multipart/form-data" id="formProjeto">
       {{ form.hidden_tag() }}
-
       <div class="mb-3">
         {{ form.title.label(class="form-label") }}
-        {{ form.title(class="form-control") }}
-        {% for error in form.title.errors %}
-          <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        {{ form.title(class="form-control", id="titulo") }}
       </div>
-
       <div class="mb-3">
         {{ form.description.label(class="form-label") }}
-        {{ form.description(class="form-control", rows=5) }}
-        {% for error in form.description.errors %}
-          <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        {{ form.description(class="form-control", id="descricao", rows=5) }}
       </div>
-
       <div class="mb-3">
         {{ form.authors.label(class="form-label") }}
-        {{ form.authors(class="form-control") }}
-        {% for error in form.authors.errors %}
-          <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        {{ form.authors(class="form-control", id="autores") }}
       </div>
-
       <div class="mb-3">
         {{ form.file.label(class="form-label") }}
         {{ form.file(class="form-control") }}
-        {% for error in form.file.errors %}
-          <div class="text-danger">{{ error }}</div>
-        {% endfor %}
       </div>
-
-      <button type="submit" class="btn btn-primary">Publicar Projeto</button>
-      <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary w-100 mt-3">Publicar</button>
     </form>
+
+    <!-- Área de pré-visualização -->
+    <div class="mt-5" id="previewBox">
+      <h4 class="text-center text-primary mb-3">Pré-visualização</h4>
+      <div class="card p-3 shadow-sm">
+        <h5 id="prevTitulo" class="card-title text-primary">Título do Projeto</h5>
+        <h6 id="prevAutores" class="card-subtitle mb-2 text-muted">Autores...</h6>
+        <p id="prevDescricao" class="card-text text-secondary">A descrição aparecerá aqui...</p>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

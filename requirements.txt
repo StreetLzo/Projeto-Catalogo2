@@ -6,3 +6,4 @@ Flask-WTF
 python-dotenv
 PyMySQL
 Werkzeug
+email-validator
