@@ -22,12 +22,12 @@ body {
 .navbar-brand {
   font-weight: 600;
   font-size: 1.5rem;
-  color: #fff !important;
+  color: #000000 !important;
   letter-spacing: 0.5px;
 }
 
 .navbar-nav .nav-link {
-  color: #eaeaea !important;
+  color: #000000 !important;
   margin-left: 1rem;
   transition: color 0.3s;
 }
