@@ -12,6 +12,14 @@ from models import db, User, Project, Favorite
 
 from forms import RegisterForm, LoginForm, ProjectForm
 
+import os
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+
+
 load_dotenv()
 
 def create_app():
@@ -22,6 +30,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'uploads')
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
     migrate = Migrate(app, db)
@@ -50,23 +59,8 @@ def create_app():
         projects = projects.paginate(page=page, per_page=10, error_out=False)
         return render_template('index.html', projects=projects, q=q)
 
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
-        form = RegisterForm()
-        if form.validate_on_submit():
-            if User.query.filter_by(email=form.email.data).first():
-                flash('E-mail já cadastrado.', 'warning')
-                return redirect(url_for('register'))
-            user = User(
-                name=form.name.data,
-                email=form.email.data,
-                password_hash=generate_password_hash(form.password.data)
-            )
-            db.session.add(user)
-            db.session.commit()
-            flash('Cadastro realizado! Faça login.', 'success')
-            return redirect(url_for('login'))
-        return render_template('register.html', form=form)
+    
+    
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -79,6 +73,46 @@ def create_app():
                 return redirect(url_for('index'))
             flash('Credenciais incorretas.', 'danger')
         return render_template('login.html', form=form)
+    
+        # === REGISTRO DE USUÁRIO COM FOTO DE PERFIL ===
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        form = RegisterForm()
+
+        if form.validate_on_submit():
+            from werkzeug.security import generate_password_hash
+            from werkzeug.utils import secure_filename
+            import uuid, os
+
+            existing_user = User.query.filter_by(email=form.email.data).first()
+            if existing_user:
+                flash('E-mail já cadastrado. Faça login ou use outro e-mail.', 'warning')
+                return redirect(url_for('register'))
+
+            # Processa a foto de perfil, se houver
+            foto_nome = None
+            if form.foto.data:
+                arquivo = form.foto.data
+                nome_seguro = secure_filename(arquivo.filename)
+                foto_nome = f"{uuid.uuid4().hex}_{nome_seguro}"
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], foto_nome)
+                arquivo.save(upload_path)
+
+            # Cria o novo usuário
+            novo_user = User(
+                name=form.name.data,
+                email=form.email.data,
+                password_hash=generate_password_hash(form.password.data),
+                foto_perfil=foto_nome
+            )
+
+            db.session.add(novo_user)
+            db.session.commit()
+            flash('Cadastro realizado com sucesso! Faça login para continuar.', 'success')
+            return redirect(url_for('login'))
+
+        return render_template('register.html', form=form)
+
 
     @app.route('/logout')
     @login_required
@@ -212,8 +246,40 @@ def create_app():
         projects = Project.query.order_by(Project.created_at.desc()).all()
         users = User.query.order_by(User.name).all()
         return render_template('admin.html', projects=projects, users=users)
+    
+    # === FAVORITOS ===
+    @app.route('/favoritos')
+    @login_required
+    def favoritos():
+        favs = Favorite.query.filter_by(user_id=current_user.id).all()
+        projetos = [fav.project for fav in favs]
+        return render_template('favoritos.html', projetos=projetos)
 
-    return app
+    # === PERFIL DO USUÁRIO ===
+    @app.route('/perfil', methods=['GET', 'POST'])
+    @login_required
+    def perfil():
+        if request.method == 'POST':
+            nome = request.form.get('nome')
+            email = request.form.get('email')
+            senha = request.form.get('senha')
+
+            if nome:
+                current_user.name = nome
+            if email:
+                current_user.email = email
+            if senha:
+                from werkzeug.security import generate_password_hash
+                current_user.password_hash = generate_password_hash(senha)
+
+            db.session.commit()
+            flash('Informações atualizadas com sucesso!', 'success')
+            return redirect(url_for('perfil'))
+
+        return render_template('perfil.html')
+
+    return app  
+
 
 if __name__ == '__main__':
     app = create_app()

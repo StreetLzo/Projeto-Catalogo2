@@ -15,24 +15,25 @@
   
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow">
   <div class="container">
-    <a class="navbar-brand" href="{{ url_for('index') }}">Catálogo</a>
+    <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">Catálogo</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         {% if current_user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="#">Olá, {{ current_user.name }}</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('create_project') }}">Novo Projeto</a></li>
-          {% if current_user.is_admin %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin_panel') }}">Admin</a></li>{% endif %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ url_for('favoritos') }}">Favoritos</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ url_for('perfil') }}">Perfil</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ url_for('create_project') }}">Novo Projeto</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{{ url_for('logout') }}">Deslogar</a></li>
         {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Entrar</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Cadastrar</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login') }}">Entrar</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('register') }}">Cadastrar</a></li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
 
 <div class="container">
   {% with messages = get_flashed_messages(with_categories=true) %}
