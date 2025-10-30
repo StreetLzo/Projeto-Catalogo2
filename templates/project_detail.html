@@ -28,5 +28,20 @@
     {% endif %}
   </div>
 </div>
+
+{% if preview_url %}
+  {% if project.file_path.endswith('.pdf') %}
+    <iframe src="{{ preview_url }}" width="100%" height="600px"></iframe>
+  {% elif project.file_path.endswith('.png') or project.file_path.endswith('.jpg') or project.file_path.endswith('.jpeg') %}
+    <img src="{{ preview_url }}" alt="Pré-visualização" class="img-fluid rounded shadow">
+  {% else %}
+    <a href="{{ preview_url }}" class="btn btn-primary mt-2" download>Baixar arquivo</a>
+  {% endif %}
+{% else %}
+  <p>Nenhum arquivo disponível para visualização.</p>
+{% endif %}
+
 {% endblock %}
+
+
     

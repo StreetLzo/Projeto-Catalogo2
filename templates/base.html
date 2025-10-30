@@ -29,6 +29,13 @@
           <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login') }}">Entrar</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('register') }}">Cadastrar</a></li>
         {% endif %}
+        {% if current_user.is_authenticated %}
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('meus_projetos') }}">Meus Projetos</a></li>
+  {% if current_user.is_admin %}
+    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+  {% endif %}
+{% endif %}
+
       </ul>
     </div>
   </div>

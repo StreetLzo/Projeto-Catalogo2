@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Meus Projetos</h2>
+
+  {% if projetos %}
+    <div class="row">
+      {% for project in projetos %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          {% if project.file_path and (project.file_path.endswith('.png') or project.file_path.endswith('.jpg')) %}
+            <img src="{{ url_for('uploads', filename=project.file_path) }}" class="card-img-top" alt="{{ project.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ project.title }}</h5>
+            <p class="card-text">{{ project.description[:100] }}...</p>
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-sm btn-primary">Ver</a>
+            <a href="{{ url_for('edit_project', project_id=project.id) }}" class="btn btn-sm btn-warning">Editar</a>
+            <form action="{{ url_for('delete_project', project_id=project.id) }}" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Excluir este projeto?')">Excluir</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Você ainda não cadastrou nenhum projeto.</p>
+  {% endif %}
+</div>
+{% endblock %}

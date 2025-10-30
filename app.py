@@ -1,36 +1,30 @@
 # app.py
 import os
+import uuid
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, abort
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from dotenv import load_dotenv
-import uuid
 
 from models import db, User, Project, Favorite
-
 from forms import RegisterForm, LoginForm, ProjectForm
 
-import os
+# === Configuração base ===
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-
-
 load_dotenv()
+
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or 'troca_urgentemente'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or 'sqlite:///catalog.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'uploads')
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
 
     db.init_app(app)
     migrate = Migrate(app, db)
@@ -43,7 +37,10 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # ---------- Rotas ----------
+    # ============================
+    #           ROTAS
+    # ============================
+
     @app.route('/')
     def index():
         q = request.args.get('q', '').strip()
@@ -59,9 +56,7 @@ def create_app():
         projects = projects.paginate(page=page, per_page=10, error_out=False)
         return render_template('index.html', projects=projects, q=q)
 
-    
-    
-
+    # === LOGIN ===
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
@@ -73,47 +68,38 @@ def create_app():
                 return redirect(url_for('index'))
             flash('Credenciais incorretas.', 'danger')
         return render_template('login.html', form=form)
-    
-        # === REGISTRO DE USUÁRIO COM FOTO DE PERFIL ===
+
+    # === REGISTRO ===
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         form = RegisterForm()
-
         if form.validate_on_submit():
-            from werkzeug.security import generate_password_hash
-            from werkzeug.utils import secure_filename
-            import uuid, os
-
             existing_user = User.query.filter_by(email=form.email.data).first()
             if existing_user:
                 flash('E-mail já cadastrado. Faça login ou use outro e-mail.', 'warning')
                 return redirect(url_for('register'))
 
-            # Processa a foto de perfil, se houver
             foto_nome = None
             if form.foto.data:
                 arquivo = form.foto.data
                 nome_seguro = secure_filename(arquivo.filename)
                 foto_nome = f"{uuid.uuid4().hex}_{nome_seguro}"
-                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], foto_nome)
-                arquivo.save(upload_path)
+                arquivo.save(os.path.join(app.config['UPLOAD_FOLDER'], foto_nome))
 
-            # Cria o novo usuário
             novo_user = User(
                 name=form.name.data,
                 email=form.email.data,
                 password_hash=generate_password_hash(form.password.data),
                 foto_perfil=foto_nome
             )
-
             db.session.add(novo_user)
             db.session.commit()
-            flash('Cadastro realizado com sucesso! Faça login para continuar.', 'success')
+            flash('Cadastro realizado com sucesso! Faça login.', 'success')
             return redirect(url_for('login'))
 
         return render_template('register.html', form=form)
 
-
+    # === LOGOUT ===
     @app.route('/logout')
     @login_required
     def logout():
@@ -121,9 +107,7 @@ def create_app():
         flash('Desconectado.', 'info')
         return redirect(url_for('index'))
 
-    def allowed_file(filename):
-        return '.' in filename
-
+    # === NOVO PROJETO ===
     @app.route('/project/new', methods=['GET', 'POST'])
     @login_required
     def create_project():
@@ -137,37 +121,48 @@ def create_app():
                 path = os.path.join(app.config['UPLOAD_FOLDER'], unique)
                 f.save(path)
                 filename = unique
+
             project = Project(
                 title=form.title.data,
                 description=form.description.data,
                 file_path=filename,
                 authors_text=form.authors.data
             )
-            # tenta associar autores registrados por nome (opcional)
-            names = [n.strip() for n in form.authors.data.split(',') if n.strip()]
-            for name in names:
-                u = User.query.filter(User.name.ilike(name)).first()
-                if u and u not in project.authors:
-                    project.authors.append(u)
+
+            # 🔥 Associa automaticamente o usuário logado como autor
+            project.authors.append(current_user)
 
             db.session.add(project)
             db.session.commit()
             flash('Projeto publicado!', 'success')
             return redirect(url_for('index'))
+
         return render_template('project_create.html', form=form)
 
+
+    # === DETALHE DO PROJETO + PRÉ-VISUALIZAÇÃO ===
     @app.route('/project/<int:project_id>')
     def project_detail(project_id):
         project = Project.query.get_or_404(project_id)
         is_fav = False
         if current_user.is_authenticated:
             is_fav = Favorite.query.filter_by(user_id=current_user.id, project_id=project.id).first() is not None
-        return render_template('project_detail.html', project=project, is_fav=is_fav)
 
+        # lógica da pré-visualização
+        preview_url = None
+        if project.file_path:
+            ext = project.file_path.rsplit('.', 1)[-1].lower()
+            if ext in ['png', 'jpg', 'jpeg', 'pdf']:
+                preview_url = url_for('uploads', filename=project.file_path)
+
+        return render_template('project_detail.html', project=project, is_fav=is_fav, preview_url=preview_url)
+
+    # === DOWNLOAD / VISUALIZAÇÃO DE UPLOADS ===
     @app.route('/uploads/<filename>')
     def uploads(filename):
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+    # === FAVORITAR ===
     @app.route('/project/<int:project_id>/favorite', methods=['POST'])
     @login_required
     def favorite_toggle(project_id):
@@ -184,6 +179,7 @@ def create_app():
             flash('Adicionado aos favoritos.', 'success')
         return redirect(request.referrer or url_for('project_detail', project_id=project.id))
 
+    # === EDIÇÃO DE PROJETO ===
     def can_edit(project):
         return current_user.is_authenticated and (current_user.is_admin or current_user in project.authors)
 
@@ -198,15 +194,14 @@ def create_app():
             project.title = form.title.data
             project.description = form.description.data
             project.authors_text = form.authors.data
-            # arquivo novo?
+
             if form.file.data:
                 f = form.file.data
                 orig = secure_filename(f.filename)
                 unique = f"{uuid.uuid4().hex}_{orig}"
-                path = os.path.join(app.config['UPLOAD_FOLDER'], unique)
-                f.save(path)
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], unique))
                 project.file_path = unique
-            # atualizar associação de autores por nome (tenta encontrar usuários)
+
             project.authors = []
             names = [n.strip() for n in form.authors.data.split(',') if n.strip()]
             for name in names:
@@ -216,18 +211,18 @@ def create_app():
             db.session.commit()
             flash('Projeto atualizado.', 'success')
             return redirect(url_for('project_detail', project_id=project.id))
-        # preencher campo authors com texto salvo
+
         if request.method == 'GET':
             form.authors.data = project.authors_text
         return render_template('edit_project.html', form=form, project=project)
 
+    # === EXCLUSÃO ===
     @app.route('/project/<int:project_id>/delete', methods=['POST'])
     @login_required
     def delete_project(project_id):
         project = Project.query.get_or_404(project_id)
         if not can_edit(project):
             abort(403)
-        # remover arquivo fisico (opcional)
         if project.file_path:
             try:
                 os.remove(os.path.join(app.config['UPLOAD_FOLDER'], project.file_path))
@@ -238,6 +233,7 @@ def create_app():
         flash('Projeto excluído.', 'info')
         return redirect(url_for('index'))
 
+    # === ADMIN ===
     @app.route('/admin')
     @login_required
     def admin_panel():
@@ -246,7 +242,7 @@ def create_app():
         projects = Project.query.order_by(Project.created_at.desc()).all()
         users = User.query.order_by(User.name).all()
         return render_template('admin.html', projects=projects, users=users)
-    
+
     # === FAVORITOS ===
     @app.route('/favoritos')
     @login_required
@@ -255,7 +251,7 @@ def create_app():
         projetos = [fav.project for fav in favs]
         return render_template('favoritos.html', projetos=projetos)
 
-    # === PERFIL DO USUÁRIO ===
+    # === PERFIL ===
     @app.route('/perfil', methods=['GET', 'POST'])
     @login_required
     def perfil():
@@ -269,7 +265,6 @@ def create_app():
             if email:
                 current_user.email = email
             if senha:
-                from werkzeug.security import generate_password_hash
                 current_user.password_hash = generate_password_hash(senha)
 
             db.session.commit()
@@ -278,9 +273,30 @@ def create_app():
 
         return render_template('perfil.html')
 
-    return app  
+        # === DASHBOARD ADMIN ===
+    @app.route('/admin/dashboard')
+    @login_required
+    def admin_dashboard():
+        if not current_user.is_admin:
+            abort(403)
+        projects = Project.query.order_by(Project.created_at.desc()).all()
+        users = User.query.order_by(User.name).all()
+        return render_template('admin_dashboard.html', projects=projects, users=users)
+
+        # === DASHBOARD DO USUÁRIO ===
+    @app.route('/meus_projetos')
+    @login_required
+    def meus_projetos():
+        # projetos em que o usuário é autor
+        projetos = Project.query.filter(Project.authors.any(id=current_user.id)).order_by(Project.created_at.desc()).all()
+        return render_template('meus_projetos.html', projetos=projetos)
 
 
+
+    return app
+
+
+# === Execução ===
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True)
