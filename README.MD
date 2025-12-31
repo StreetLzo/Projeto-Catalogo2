@@ -1,95 +1,71 @@
+<h1 align="center">📚 Catálogo de Trabalhos Acadêmicos</h1>
 
-## 📄 README.md
+<p align="center">
+  Sistema web para organização e consulta de projetos acadêmicos.
+</p>
 
-````markdown
-# 📚 Catálogo de Trabalhos Acadêmicos
-
-Este projeto tem como objetivo oferecer uma plataforma simples e eficiente para o **cadastro, organização e consulta de projetos acadêmicos**, permitindo que estudantes e professores tenham acesso a trabalhos de turmas anteriores, evitando a perda de conhecimento e incentivando a inovação.
-
----
-
-## 🚀 Funcionalidades
-
-- Cadastro de usuários  
-- Autenticação segura (login/logout)  
-- Cadastro de projetos com título, descrição, autores e arquivo anexo  
-- Pesquisa de projetos por título, descrição ou autor  
-- Favoritar projetos para consulta rápida  
-- Edição e exclusão de projetos (autores e administradores)  
-- Painel administrativo para gerenciar usuários e projetos  
+<p align="center">
+  <img src="https://img.shields.io/badge/status-finalizado-brightgreen" />
+  <!-- <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" /> -->
+  <img src="https://img.shields.io/badge/projeto-acadêmico-blue" />
+</p>
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 📌 Sobre o projeto
 
-- **Python 3**  
-- **Flask** (framework web)  
-- **Flask-WTF** (formulários e validação)  
-- **Flask-Login** (autenticação)  
-- **Flask-Migrate + SQLAlchemy** (ORM e migrações de banco)  
-- **SQLite** (banco padrão, podendo trocar para MySQL)  
-- **Bootstrap 5** (frontend responsivo)  
+O **Catálogo de Trabalhos Acadêmicos** é uma aplicação web desenvolvida para centralizar
+projetos acadêmicos de turmas anteriores, facilitando o acesso à informação e evitando
+a perda de conhecimento dentro do ambiente educacional.
 
 ---
 
-## 📂 O que você encontra aqui
+## ❌ O problema
 
-Neste repositório você encontrará:  
-- Código-fonte completo da aplicação  
-- Estrutura de templates HTML com Bootstrap  
-- Arquivo `requirements.txt` com dependências do projeto  
-- Documentação básica para rodar o sistema localmente  
+- Projetos acadêmicos dispersos ou perdidos  
+- Dificuldade de acesso a trabalhos antigos  
+- Falta de organização e padronização  
 
 ---
 
-## ▶️ Como executar o projeto
+## ✅ A solução
 
-1. Clone este repositório:  
-   ```bash
-   git clone https://github.com/seu-usuario/catalogo-projetos.git
-   cd catalogo-projetos
-````
+A plataforma permite que estudantes e professores consultem e organizem projetos em um
+único sistema, com busca eficiente e gerenciamento de conteúdos.
 
-2. Crie e ative o ambiente virtual:
+---
 
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate    # Windows
-   source venv/bin/activate # Linux/Mac
-   ```
+## ⚙️ Funcionalidades
 
-3. Instale as dependências:
+- 👤 Cadastro e autenticação de usuários  
+- 📄 Cadastro de projetos com título, descrição, autores e arquivo anexo  
+- 🔍 Pesquisa por título, descrição ou autor  
+- ⭐ Favoritar projetos  
+- ✏️ Edição e exclusão (autores e administradores)  
+- 🛠️ Painel administrativo  
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
-4. Configure o banco de dados:
+## 🛠️ Tecnologias utilizadas
 
-   ```bash
-   flask db init
-   flask db migrate -m "initial"
-   flask db upgrade
-   ```
-
-5. Rode a aplicação:
-
-   ```bash
-   flask run
-   ```
-
-6. Acesse no navegador:
-
-   ```
-   http://127.0.0.1:5000
-   ```
+- Python 3  
+- Flask  
+- Flask-WTF  
+- Flask-Login  
+- Flask-Migrate + SQLAlchemy  
+- SQLite  
+- Bootstrap 5  
 
 ---
 
 ## 👥 Autores
 
-* Felipe
-* Kauan
-* Lamborghini
+- **Felipe Alves Torres**  
+- Kauan  
 
-```
+
+---
+
+<p align="center">
+  <em>Organização, acesso e preservação do conhecimento acadêmico.</em>
+</p>
