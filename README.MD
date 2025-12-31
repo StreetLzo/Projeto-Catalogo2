@@ -90,13 +90,6 @@ Neste repositório você encontrará:
 
 * Felipe
 * Kauan
-* Wellyson
-* Pedro
 * Lamborghini
 
-```
-
----
-
-👉 Quer que eu faça também uma **versão curta do README**, só com *descrição + como rodar + autores*, para ser usado em trabalhos acadêmicos impressos (TCC/relatório), ou prefere manter esse mais completo estilo GitHub?
 ```
