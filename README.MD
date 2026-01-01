@@ -3,7 +3,10 @@
 <p align="center">
   Sistema web para organização e consulta de projetos acadêmicos.
 </p>
-
+<p align="center">
+  <a href="https://febism.pythonanywhere.com/" target="_blank">
+    <img src="https://img.shields.io/badge/🔗%20VISUALIZE%20O%20PROJETO%20AQUI-2962FF?style=for-the-badge&logo=vercel&logoColor=white" />
+  </a>
 <p align="center">
   <img src="https://img.shields.io/badge/status-finalizado-brightgreen" />
   <!-- <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" /> -->
